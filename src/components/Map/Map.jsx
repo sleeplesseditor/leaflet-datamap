@@ -1,14 +1,30 @@
 import React, { createRef, Fragment, PureComponent } from 'react';
+import { colorScale } from './helpers';
 import { readRemoteFile } from 'react-papaparse'
 import { Map, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './map.scss';
 
-  const MarkerLayer = ({ latitude, longitude, ...props }) => (
-    <CircleMarker center={[latitude, longitude]} radius={2}>
-      {/* <Popup>{content}</Popup> */}
+  const MarkerLayer = ({ latitude, longitude, name, postcode, chargeDeviceStatus, deviceControllerName, ...props }) => {
+    const inService = chargeDeviceStatus === 'In service';
+    const color = inService ? colorScale[deviceControllerName] || '#aaa' : '#777';
+
+    return (<CircleMarker center={[latitude, longitude]} radius={3} color={color} fillOpacity={1} weight={0.25}>
+      <Popup>
+        <div>
+          <h3 className="map-container-popup-heading">{name}</h3>
+          <span>
+          <b>Postcode:</b> {postcode}
+          <br/>
+          <b>Operator:</b> {deviceControllerName}
+          <br/>
+          <b>Status:</b> {chargeDeviceStatus}
+          <br/>
+          </span>
+        </div>
+      </Popup>
     </CircleMarker>
-  )
+  )}
   
   const MarkersList = ({ markers }) => {
     const items = markers.map(({ key, ...props }) => (
