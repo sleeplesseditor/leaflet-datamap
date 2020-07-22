@@ -7,4 +7,4 @@ export const colorScale = {
     'ChargePoint Services': '#EEC170',
     'ChargePlace Scotland': '#6D98BA',
     'APT': '#AF4319'
-  };
+};
